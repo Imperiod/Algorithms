@@ -50,7 +50,15 @@ namespace Algorithms
         {
             if (node.Childrens?.Count == 1)
             {
-                return $"[{node.Index}]:{node.Weight} -> " + ToString(node.Childrens[0]);
+                if (node.Index == 0)
+                {
+
+                }
+                else
+                {
+
+                }
+                return $"[{node.Index}]:{node.Weight} -> " + ToString(node.Childrens[0]) + (node.Index == 0 ? $"\nAll path will be equal {GetSumofPath(node)} weight" : "");
             }
             else if (node.Childrens?.Count > 1)
             {
@@ -60,6 +68,17 @@ namespace Algorithms
             {
                 return $"[{node.Index}]:{node.Weight}";
             }
+        }
+
+        double GetSumofPath(Node node)
+        {
+            double sum = default;
+            if (node.Childrens.Count != 0)
+                sum += GetSumofPath(node.Childrens.First()) + node.Weight;
+            else
+                sum += node.Weight;
+            
+            return sum;
         }
 
         /// <summary>
