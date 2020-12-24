@@ -10,17 +10,27 @@ namespace Algorithms
     /// </summary>
     public class Node
     {
-        List<Node> Childrens { get; }
+        public Node Parent { get; set; }
+        public List<Node> Childrens { get; set; }
 
         public int Index { get; }
 
         public double Weight { get; }
 
-        public Node(int Index, double Weight = 1, List<Node> Childrens = default)
+        public Node(int Index, double Weight = 1, List<Node> Childrens = null, Node Parent = null)
         {
             this.Index = Index;
             this.Weight = Weight;
-            this.Childrens = Childrens;
+            this.Childrens = Childrens is null ? new List<Node>() : Childrens;
+            this.Parent = Parent;
+        }
+
+        public Node(List<NodePoint> nodePoints)
+        {
+            var x = Build(nodePoints, nodePoints.First());
+            Index = x.First().Index;
+            Weight = x.First().Weight;
+            Childrens = x.First().Childrens;
         }
 
         /// <summary>
@@ -69,7 +79,7 @@ namespace Algorithms
                     result.Add(list);
                 }
 
-                return result.First(f => 
+                return result.First(f =>
                                         f.Sum(s => s.Item2) == result.Min(m => m.Sum(ms => ms.Item2)));
             }
         }
@@ -90,6 +100,40 @@ namespace Algorithms
             {
                 return new Node(list[index].Item1, list[index].Item2, new List<Node>() { Rebuild(list, index + 1) });
             }
+        }
+
+        List<Node> Build(List<NodePoint> list, NodePoint point, int index = 0)
+        {
+            foreach (var p in list)
+            {
+                List<Node> nodes = new List<Node>();
+                foreach (var item in point.Points)
+                {
+                    if (point.Points.First() == (0, 0))
+                    {
+                        (int, double) x = item;
+                        point.Points.Remove(item);
+                        return new List<Node>() { new Node(x.Item1, x.Item2, Build(list, point)) };
+                    }
+                    else if (list.Count == item.Item1)
+                    {
+                        nodes.Add(new Node(item.Item1, item.Item2));
+                        return nodes;
+                    }
+                    else if (item.Item1 < index)
+                    {
+                        continue;
+                    }
+                    else
+                    {
+                        nodes.Add(new Node(item.Item1, item.Item2, Build(list, list[item.Item1], item.Item1)));
+                    }
+                    
+                    //return new List<Node>() { new Node(item.Item1, item.Item2, nodes) };
+                }
+                return nodes;
+            }
+            return null;
         }
     }
 }
