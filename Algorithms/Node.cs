@@ -10,21 +10,29 @@ namespace Algorithms
     /// </summary>
     public class Node
     {
-        public Node Parent { get; set; }
         public List<Node> Childrens { get; set; }
 
         public int Index { get; }
 
         public double Weight { get; }
 
-        public Node(int Index, double Weight = 1, List<Node> Childrens = null, Node Parent = null)
+        /// <summary>
+        /// Classic realisation
+        /// </summary>
+        /// <param name="Index">Index node in tree</param>
+        /// <param name="Weight">Weight of node from other node, as from A to B = 10</param>
+        /// <param name="Childrens">Childrens this node, whichs have own childrens</param>
+        public Node(int Index, double Weight = 1, List<Node> Childrens = null)
         {
             this.Index = Index;
             this.Weight = Weight;
             this.Childrens = Childrens is null ? new List<Node>() : Childrens;
-            this.Parent = Parent;
         }
 
+        /// <summary>
+        /// Build with service class NodePoint
+        /// </summary>
+        /// <param name="nodePoints">list of NodePoint</param>
         public Node(List<NodePoint> nodePoints)
         {
             var x = Build(nodePoints, nodePoints.First());
