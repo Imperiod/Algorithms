@@ -91,9 +91,13 @@ namespace Algorithms
         {
             List<List<(int, double)>> result = new List<List<(int, double)>>();
 
-            if (node.Childrens is null || node.Index == LastIndex)
+            if (node.Index == LastIndex)
             {
                 return new List<(int, double)>() { (node.Index, node.Weight) };
+            }
+            else if(node.Childrens is null || node.Childrens?.Count == 0)
+            {
+                return null;
             }
             else
             {
@@ -102,12 +106,24 @@ namespace Algorithms
                     List<(int, double)> list = new List<(int, double)>();
                     list.Add((node.Index, node.Weight));
                     var v = GetShortWayToNode(LastIndex, item);
-                    v.ForEach(f => list.Add(f));
-                    result.Add(list);
+                    if (v != null)
+                    {
+                        v.ForEach(f => list.Add(f));
+                        result.Add(list);
+                    }
                 }
 
-                return result.First(f =>
+                //Protector
+                if (result.Count == 0)
+                {
+                    return null;
+                }
+                else
+                {
+                    return result.First(f =>
                                         f.Sum(s => s.Item2) == result.Min(m => m.Sum(ms => ms.Item2)));
+                }
+                
             }
         }
 
