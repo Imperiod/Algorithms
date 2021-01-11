@@ -26,6 +26,10 @@ namespace Algorithms
                 //Protector
                 if (value < 0)
                     throw new ArgumentException("Value can be only positive", nameof(value));
+
+                //Protector
+                if (Items != null && Items.Count > 0 && value < Items.Min(m => m.Weight))
+                    throw new ArgumentException("When items is not empty, value must be equel or great than min weight in items", nameof(MaxWeight));
                 maxWeight = value;
             }
         }
@@ -46,10 +50,6 @@ namespace Algorithms
             if (maxWeight < 0)
                 throw new ArgumentException("MaxWeight can be only positive", nameof(maxWeight));
 
-            //Protector
-            if (Items.Count > 0 && maxWeight < Items.Min(m => m.Weight))
-                throw new ArgumentException("MaxWight must be great than min weight in list items", nameof(maxWeight));
-
             //Define max weight
             if (maxWeight == 0)
             {
@@ -66,6 +66,10 @@ namespace Algorithms
             {
                 MaxWeight = maxWeight;
             }
+
+            //Protector
+            if (Items.Count > 0 && maxWeight < Items.Min(m => m.Weight))
+                throw new ArgumentException("MaxWeight must be equal or great than min weight in list items", nameof(maxWeight));
 
             MaxItemsByWeight = new Dictionary<double, List<DynamicProgrammingItem>>();
         }
@@ -106,7 +110,7 @@ namespace Algorithms
 
             //Protector
             if (remainder < list.Min(m => m.Weight))
-                throw new ArgumentException("Remainder must be great than min weight in list items", nameof(remainder));
+                throw new ArgumentException("Remainder must be equal or great than min weight in list items", nameof(remainder));
 
             //Optimizer
             if (MaxItemsByWeight.ContainsKey(remainder) && topFunc)
@@ -177,6 +181,10 @@ namespace Algorithms
         /// <returns>List of items with the highest value for a given maximum weight.</returns>
         public string ToStringMaxItems()
         {
+            //Protector
+            if (Items != null && Items.Count > 0 && MaxWeight < Items.Min(m => m.Weight))
+                throw new ArgumentException("MaxWeight must be equal or great than min weight in list items", nameof(MaxWeight));
+
             List<DynamicProgrammingItem> items = GetMaxItems();
 
             //Protector
@@ -200,6 +208,10 @@ namespace Algorithms
             //Protector
             if (weight < 0)
                 throw new ArgumentException("Weight can be only positive", nameof(weight));
+
+            //Protector
+            if (Items != null && Items.Count > 0 && weight < Items.Min(m => m.Weight))
+                throw new ArgumentException("Weight must be equal or great than min weight in list items", nameof(weight));
 
             List<DynamicProgrammingItem> items = GetMaxItemsByWeight(remainder: weight);
 
