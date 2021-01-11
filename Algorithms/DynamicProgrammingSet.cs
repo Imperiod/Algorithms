@@ -167,7 +167,7 @@ namespace Algorithms
                 }
             }
 
-            if (topFunc)
+            if (topFunc && MaxItemsByWeight.ContainsKey(remainder + result.Sum(s => s.Weight)) == false)
             {
                 MaxItemsByWeight.Add(remainder + result.Sum(s => s.Weight), result);
             }
