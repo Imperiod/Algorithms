@@ -8,9 +8,9 @@ namespace Algorithms
     {
         public string Name { get; }
 
-        public double Value { get; }
+        public decimal Value { get; }
 
-        public double Weight { get; }
+        public decimal Weight { get; }
 
         /// <summary>
         /// 
@@ -18,7 +18,7 @@ namespace Algorithms
         /// <param name="name"></param>
         /// <param name="weight">Only positive</param>
         /// <param name="value">Only positive</param>
-        public DynamicProgrammingItem(string name, double weight, double value)
+        public DynamicProgrammingItem(string name, decimal weight, decimal value)
         {
             //Protector
             if (weight < 0)
@@ -33,5 +33,10 @@ namespace Algorithms
         }
 
         public int CompareTo(DynamicProgrammingItem obj) => Value > obj.Value ? -1 : (Value == obj.Value ? 0 : 1);
+
+        public override string ToString()
+        {
+            return $"{Name} [ {Weight} : {Value} ]";
+        }
     }
 }
