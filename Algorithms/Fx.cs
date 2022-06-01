@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Algorithms
 {
+    /// <summary>
+    /// Functional class
+    /// </summary>
     public static class Fx
     {
         /// <summary>
@@ -38,8 +41,6 @@ namespace Algorithms
                 ulong r = n[0] % n[1];
 
                 return r == 0 ? n[1] : gcd(new List<ulong>() { n[1], r });
-
-
             }
         }
     }
